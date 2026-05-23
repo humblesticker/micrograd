@@ -1,0 +1,12 @@
+digraph {
+	graph [rankdir=LR]
+	4423634624 [label="{ + | data 4.0000 }" shape=record]
+	4339935008 [label="{  | data 2.0000 }" shape=record]
+	4416511808 [label="{  | data 10.0000 }" shape=record]
+	4339935056 [label="{  | data -3.0000 }" shape=record]
+	4423634288 [label="{ * | data -6.0000 }" shape=record]
+	4416511808 -> 4423634624
+	4423634288 -> 4423634624
+	4339935008 -> 4423634288
+	4339935056 -> 4423634288
+}
