@@ -41,6 +41,7 @@ class MLP:
         return [p for layer in self.layers for p in layer.parameters() ]
 
 n = MLP(3, [4, 4, 1])
+parameters = n.parameters()
 
 def u1():
     x = [2.0, 3.0, -1.0]
@@ -60,18 +61,22 @@ def u2():
     ]
     ys = [1.0, -1.0, -1.0, 1.0]
 
+    count = 0
     while True:
         ypred = [n(x) for x in xs]
         loss = sum([(yp - yt)**2 for yt, yp in zip(ys, ypred)])
         print(loss)
-        if loss.data < 0.01: 
-            print(ypred)
+        if loss.data < 0.001: 
+            print(count, ypred)
             break
 
-        loss.backward()
-        parameters = n.parameters()
         for param in parameters:
-            param.data += -param.grad * 0.01   
+            param.grad = 0.0
+        loss.backward()
+
+        for param in parameters:
+            param.data += -param.grad * 0.05  
+        count += 1
 
 u2()
 #dot = draw_dot(loss)
