@@ -49,9 +49,7 @@ def u1():
     print(out)
 
     loss = (out - y)**2
-    loss.backward()
-    dot = draw_dot(loss)
-    dot.render('graph.gv', view=True, format='png')
+    return loss
 
 def u2():
     xs = [
@@ -61,18 +59,23 @@ def u2():
         [1.0, 1.0, -1.0]
     ]
     ys = [1.0, -1.0, -1.0, 1.0]
-    ypred = [n(x) for x in xs]
-    for yp in ypred:
-        yp.backward()
 
-    loss = sum([(yp - yt)**2 for yt, yp in zip(ys, ypred)])
-    loss.backward()
-    parameters = n.parameters()
-    print(parameters)
-    #dot = draw_dot(loss)
-    #dot.render('graph.gv', view=True, format='png')
+    while True:
+        ypred = [n(x) for x in xs]
+        loss = sum([(yp - yt)**2 for yt, yp in zip(ys, ypred)])
+        print(loss)
+        if loss.data < 0.01: 
+            print(ypred)
+            break
+
+        loss.backward()
+        parameters = n.parameters()
+        for param in parameters:
+            param.data += -param.grad * 0.01   
 
 u2()
+#dot = draw_dot(loss)
+#dot.render('graph.gv', view=True, format='png')
 
 
 
